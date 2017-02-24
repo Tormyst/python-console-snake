@@ -32,26 +32,6 @@ def drawScore():
         theme.get_color('border')
         )
 
-
-def drawLives():
-    posx = (-stage.width / 2) + 3
-    for x in xrange(1, game.lives + 1):
-        posx += 1
-        drawTile(
-            posx,
-            (-stage.height / 2) - 1,
-            theme.get_tile('lives'),
-            theme.get_color('lives')
-            )
-        posx += 1
-        drawTile(
-            posx,
-            (-stage.height / 2) - 1,
-            theme.get_tile('border-h'),
-            theme.get_color('border')
-            )
-
-
 def drawSnake():
     for part in game.snake:
         drawTile(
@@ -116,7 +96,6 @@ def drawBorders():
 def drawText():
     color = theme.get_color('border')
     drawTile((stage.width / 2) - 4, (-stage.height / 2) - 1, "score:", color)
-    drawTile((-stage.width / 2), (-stage.height / 2) - 1, "lives:", color)
     drawTile(-5, (stage.height / 2), " Press Q to quit ", color)
 
 
@@ -125,7 +104,6 @@ def update():
     drawSnake()
     drawApples()
     drawScore()
-    drawLives()
 
 
 def init():

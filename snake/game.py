@@ -12,7 +12,6 @@ speed = 1
 apples = []
 grow = config.initial_size - 1
 score = 0
-lives = 3
 
 
 def init():
@@ -20,7 +19,6 @@ def init():
 
     reset()
     score = 0
-    lives = 3
 
 
 def update():
@@ -76,7 +74,7 @@ def getGameArea():
 
 
 def reset():
-    global direction, snake, apples_count, apples, score, grow, lives
+    global direction, snake, apples_count, apples, score, grow
 
     direction = (1, 0)
     snake = [(0, 0)]
@@ -84,8 +82,6 @@ def reset():
     apples_count = 1
     apples = []
     grow = config.initial_size - 1
-
-    apples_count += int(math.floor(getGameArea() / config.apple_domain))
 
     for i in range(0, apples_count):
         spawnApple()
@@ -125,8 +121,6 @@ def isOutOfBoundaries(x, y):
 
 
 def checkPositionAllowed():
-    global lives
-
     collides_with_body = False
     x = snake[0][0]
     y = snake[0][1]
@@ -138,6 +132,4 @@ def checkPositionAllowed():
 
     if (collides_with_body or isOutOfBoundaries(x, y)):
         gameloop.reset()
-        lives -= 1
-        if lives == 0:
-            gameloop.state = 1
+        gameloop.state = 1
