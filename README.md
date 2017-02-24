@@ -1,5 +1,6 @@
 # python-console-snake
 
+> Fork to run snake game through genetic program.
 > Lightweight, configurable snake game running in the console
 
 ![Screenshot](http://s2.postimg.org/tzpt8rs09/snake.png)
