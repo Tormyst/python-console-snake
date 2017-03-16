@@ -1,6 +1,7 @@
 
 import curses
 import stage
+import graphics
 
 colors_map = {}
 theme = None
@@ -10,9 +11,10 @@ default_color = None
 def init():
     global theme, colors_map, default_color
 
-    theme = stage.chosen_theme
-    colors_map = get_colors_map()
-    default_color = theme['colors']['default']
+    if graphics.screen:
+        theme = stage.chosen_theme
+        colors_map = get_colors_map()
+        default_color = theme['colors']['default']
 
 
 def get_color(key):

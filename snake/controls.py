@@ -1,8 +1,6 @@
 
-import __main__
 import graphics
 import game
-import gameloop
 from config import keys
 
 
@@ -33,10 +31,3 @@ def update():
                 return
 
             game.direction = (0, -1)
-
-        elif key == keys['Q']:
-            __main__.exit()
-            exit()
-
-        elif gameloop.state == 1 and key == keys['ENTER']:
-            gameloop.init()

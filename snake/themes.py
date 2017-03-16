@@ -12,24 +12,13 @@ import curses
 
 game_themes = {
 
-    'classic': {
-        "colors": {
-            "default": (curses.COLOR_WHITE, curses.COLOR_BLACK),
-            "bg": (curses.COLOR_WHITE, curses.COLOR_WHITE),
-            "snake": (curses.COLOR_RED, curses.COLOR_GREEN),
-            "apple": (curses.COLOR_RED, curses.COLOR_RED),
-            "border": (curses.COLOR_WHITE, curses.COLOR_YELLOW),
-            "lives": (curses.COLOR_RED, curses.COLOR_RED),
-        },
-        "tiles": {
-        }
-    },
-
     'minimal': {
         "colors": {
             "default": (curses.COLOR_WHITE, curses.COLOR_BLACK),
             "bg": (curses.COLOR_BLACK, curses.COLOR_BLACK),
             "snake": (curses.COLOR_WHITE, curses.COLOR_BLACK),
+            "head": (curses.COLOR_GREEN, curses.COLOR_BLACK),
+            "tail": (curses.COLOR_RED, curses.COLOR_BLACK),
             "apple": (curses.COLOR_WHITE, curses.COLOR_BLACK),
             "border": (curses.COLOR_WHITE, curses.COLOR_BLACK),
             "lives": (curses.COLOR_WHITE, curses.COLOR_BLACK),

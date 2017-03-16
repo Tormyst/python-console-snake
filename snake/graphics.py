@@ -33,13 +33,25 @@ def drawScore():
         )
 
 def drawSnake():
-    for part in game.snake:
+    snake_head = game.snake[0]
+    snake_tail = game.snake[-1]
+    drawTile(snake_head[0],
+             snake_head[1],
+             theme.get_tile('snake-body'),
+             theme.get_color('head')
+             )
+    for part in game.snake[1:-1]:
         drawTile(
             part[0],
             part[1],
             theme.get_tile('snake-body'),
             theme.get_color('snake')
             )
+    drawTile(snake_tail[0],
+             snake_tail[1],
+             theme.get_tile('snake-body'),
+             theme.get_color('tail')
+             )
     # Clean last tile
     drawTile(
         game.lastPos[0],
@@ -60,11 +72,12 @@ def drawApples():
 
 
 def drawGame():
-    for y in range(stage.boundaries['top'], stage.boundaries['bottom']):
-        for x in range(stage.boundaries['left'], stage.boundaries['right']):
-            drawTile(x, y, theme.get_tile('bg'), theme.get_color('bg'))
-    drawBorders()
-    drawText()
+    if screen:
+        for y in range(stage.boundaries['top'], stage.boundaries['bottom']):
+            for x in range(stage.boundaries['left'], stage.boundaries['right']):
+                drawTile(x, y, theme.get_tile('bg'), theme.get_color('bg'))
+        drawBorders()
+        drawText()
 
 
 def drawBorders():
@@ -96,14 +109,12 @@ def drawBorders():
 def drawText():
     color = theme.get_color('border')
     drawTile((stage.width / 2) - 4, (-stage.height / 2) - 1, "score:", color)
-    drawTile(-5, (stage.height / 2), " Press Q to quit ", color)
-
 
 def update():
-
-    drawSnake()
-    drawApples()
-    drawScore()
+    if screen:
+        drawSnake()
+        drawApples()
+        drawScore()
 
 
 def init():
@@ -118,8 +129,11 @@ def init():
 
 
 def exit():
+    global screen
+
     screen.clear()
     screen.keypad(0)
     curses.echo()
     curses.nocbreak()
     curses.endwin()
+    screen = None

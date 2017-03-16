@@ -1,4 +1,3 @@
-
 import time
 import graphics
 import game
@@ -43,13 +42,12 @@ def start():
     playing = True
 
     init()
-    while playing:
-        controls.update()
-        if state == 0:
-            step()
-        elif state == 1:
-            graphics.drawGameOver()
+    while state == 0:
+        if graphics.screen:
+            controls.update()
+        step()
 
+    playing = False
 
 def stop():
     global playing, frame, last_update
