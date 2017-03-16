@@ -11,9 +11,9 @@ def init():
 
     available_size = (width, height) = console.getTerminalSize()
 
-    chosen_size = config.game_sizes[parser.options.size]
+    chosen_size = config.game_sizes[parser.options['size']]
 
-    if parser.options.fullscreen:
+    if parser.options['fullscreen']:
         width = available_size[0] / 2 - 2
         height = available_size[1]
     else:
@@ -41,4 +41,4 @@ def init():
         "top": int(math.floor(-height / 2)),
     }
 
-    chosen_theme = themes.game_themes[parser.options.theme]
+    chosen_theme = themes.game_themes[parser.options['theme']]

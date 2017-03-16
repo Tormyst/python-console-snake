@@ -5,15 +5,12 @@ import gameloop
 import parser
 import stage
 
-
 def exit():
     graphics.exit()
-    print 'Come back soon!'
-
 
 def run():
     try:
-        parser.init()
+        # parser.init()
         stage.init()
         graphics.init()
         theme.init()

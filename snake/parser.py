@@ -1,7 +1,7 @@
 
 from optparse import OptionParser
 
-options = None
+options = { 'size': 's', 'fullscreen': False, 'theme': 'minimal' }
 
 
 def init():
