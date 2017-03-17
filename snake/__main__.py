@@ -1,1 +1,2 @@
-import run
+from run import run
+run(True)

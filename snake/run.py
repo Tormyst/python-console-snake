@@ -4,16 +4,16 @@ import gameloop
 import stage
 
 def exit():
-    graphics.exit()
+    if graphics.screen:
+        graphics.exit()
 
-def run():
+def run(visual):
     try:
         stage.init()
-        graphics.init()
+        if visual:
+            graphics.init()
         theme.init()
         gameloop.start()
 
     finally:
         exit()
-
-run()
