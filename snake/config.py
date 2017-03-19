@@ -16,10 +16,13 @@ food_values = {
     'apple': 3,
 }
 
+score_values = {
+    'apple': 500,
+    'time': 1
+}
+
 game_sizes = {
-    's': (25, 20),
-    'm': (50, 40),
-    'l': (80, 40),
+    's': (10, 10)
 }
 
 initial_size = 4

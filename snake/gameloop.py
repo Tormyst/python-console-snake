@@ -1,56 +1,41 @@
 import time
 import graphics
 import game
-import config
 import controls
+import config
 
 last_update = None
 playing = False
 state = 0
+p = None
+frame_time = 0.1
 
 
 def update():
-    game.update()
+    game.update(p)
     graphics.update()
 
 
-def step():
-    global last_update
-
-    if graphics.screen:
-        cur_time = time.time()
-
-        if last_update:
-            elapsed = cur_time - last_update
-        else:
-            elapsed = 0
-
-        if not elapsed or elapsed > config.frame_len:
-
-            if not elapsed:
-                until_next = config.frame_len
-            else:
-                until_next = elapsed - config.frame_len
-                time.sleep(until_next)
-
-            update()
-            last_update = time.time()
-    else:
-        update()
-
-
-def start():
-    global playing, state
+def start(program_runner):
+    global playing, state, p
 
     playing = True
+    p = program_runner
+    final_score = 0
+    c = 0
 
     init()
-    while state == 0:
-        if graphics.screen:
-            controls.update()
-        step()
+    for _ in range(3):
+        while state == 0 and c < 500:
+            if graphics.screen:
+                controls.update()
+                time.sleep(frame_time)
+            update()
+            c += 1
+        reset()
 
     playing = False
+    return final_score + c * config.score_values['time']
 
 def stop():
     global playing, frame, last_update

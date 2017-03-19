@@ -1,2 +1,2 @@
 from run import run
-run(True)
+run(True, None)

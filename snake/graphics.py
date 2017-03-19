@@ -24,7 +24,7 @@ def drawGameOver():
 
 
 def drawScore():
-    score_formatted = str(game.score).zfill(2)
+    score_formatted = str(0).zfill(5)
     drawTile(
         (stage.width / 2) - 1,
         (-stage.height / 2) - 1,

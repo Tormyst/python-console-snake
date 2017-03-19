@@ -20,8 +20,15 @@ def init():
     reset()
     score = 0
 
+def get_direction(p):
+   p.set_input([snake[0][0],snake[0][1], apples[0][0], apples[0][1]])
+   p.run()
+   return p.get_value()
 
-def update():
+def update(p):
+    global direction
+    if p:
+        direction = [(1,0),(0,1),(-1,0),(0,-1)][get_direction(p)]
     moveSnake()
     checkCatch()
     checkPositionAllowed()
@@ -42,7 +49,7 @@ def eatApple(i):
     apples.pop(i)
     spawnApple()
     grow += config.food_values['apple']
-    score += 1
+    score += config.score_values['apple']
 
 
 def moveSnake():
@@ -82,8 +89,7 @@ def reset():
     apples_count = 1
     apples = []
     grow = config.initial_size - 1
-
-    for i in range(0, apples_count):
+    for _ in range(apples_count):
         spawnApple()
 
 
