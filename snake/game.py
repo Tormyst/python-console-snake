@@ -9,7 +9,7 @@ direction = (0, 0)
 lastPos = (0, 0)
 snake = []
 speed = 1
-apples = []
+apple = None
 grow = config.initial_size - 1
 score = 0
 
@@ -21,7 +21,7 @@ def init():
     score = 0
 
 def get_direction(p):
-   p.set_input([snake[0][0],snake[0][1], apples[0][0], apples[0][1]])
+   p.set_input([snake[0][0],snake[0][1], apple[0], apple[1]])
    p.run()
    return p.get_value()
 
@@ -35,18 +35,16 @@ def update(p):
 
 
 def checkCatch():
-    if not len(snake) or not len(apples):
+    if not len(snake) or not apple:
         return
 
-    for i, apple in enumerate(apples):
-        if (snake[0][0]) == apple[0] and (snake[0][1]) == apple[1]:
-            eatApple(i)
+    if (snake[0][0]) == apple[0] and (snake[0][1]) == apple[1]:
+        eatApple(i)
 
 
 def eatApple(i):
     global grow, score
 
-    apples.pop(i)
     spawnApple()
     grow += config.food_values['apple']
     score += config.score_values['apple']
@@ -81,39 +79,28 @@ def getGameArea():
 
 
 def reset():
-    global direction, snake, apples_count, apples, score, grow
+    global direction, snake, apple, score, grow
 
     direction = (1, 0)
     snake = [(0, 0)]
     gameloop.frame = 1
-    apples_count = 1
-    apples = []
     grow = config.initial_size - 1
-    for _ in range(apples_count):
-        spawnApple()
+    spawnApple()
 
 
 def spawnApple():
-    if len(apples) >= getGameArea():
-        return
+    global apple
+    position_unset = True
+    while position_unset:
+        x = random.randrange(stage.boundaries['left'], stage.boundaries['right'])
+        y = random.randrange(stage.boundaries['top'], stage.boundaries['bottom'])
+        if isOutOfBoundaries(x, y): continue
+        for part in snake:
+            if part[0] == x and part[1] == y:
+                continue
+        position_unset = False
 
-    x = random.randrange(stage.boundaries['left'], stage.boundaries['right'])
-    y = random.randrange(stage.boundaries['top'], stage.boundaries['bottom'])
-
-    position_free = True
-
-    for apple in apples:
-        if apple[0] == x and apple[1] == y:
-            position_free = False
-
-    for part in snake:
-        if part[0] == x and part[1] == y:
-            position_free = False
-
-    if position_free and not isOutOfBoundaries(x, y):
-        apples.append((x, y))
-    else:
-        spawnApple()
+    apple = (x, y)
 
 
 def isOutOfBoundaries(x, y):

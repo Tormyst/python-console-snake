@@ -62,13 +62,12 @@ def drawSnake():
 
 
 def drawApples():
-    for apple in game.apples:
-        drawTile(
-            apple[0],
-            apple[1],
-            theme.get_tile('apple'),
-            theme.get_color('apple')
-            )
+    drawTile(
+        game.apple[0],
+        game.apple[1],
+        theme.get_tile('apple'),
+        theme.get_color('apple')
+        )
 
 
 def drawGame():
