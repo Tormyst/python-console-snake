@@ -41,7 +41,6 @@ def checkCatch():
     if (snake[0][0]) == apple[0] and (snake[0][1]) == apple[1]:
         eatApple()
 
-
 def eatApple():
     global grow, score
 
