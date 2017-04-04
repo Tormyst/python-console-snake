@@ -8,7 +8,7 @@ last_update = None
 playing = False
 state = 0
 p = None
-frame_time = 0.1
+frame_time = 0.07
 
 
 def update():
@@ -21,21 +21,19 @@ def start(program_runner):
 
     playing = True
     p = program_runner
-    final_score = 0
     c = 0
 
     init()
-    for _ in range(3):
-        while state == 0 and c < 500:
-            if graphics.screen:
-                controls.update()
-                time.sleep(frame_time)
-            update()
-            c += 1
-        reset()
+    while state == 0 and c < 100:
+        if graphics.screen:
+            controls.update()
+            time.sleep(frame_time)
+        update()
+        c += 1
+    reset()
 
     playing = False
-    return final_score + c * config.score_values['time']
+    return game.score * c * config.score_values['time']
 
 def stop():
     global playing, frame, last_update

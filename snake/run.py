@@ -9,7 +9,7 @@ def exit():
         graphics.exit()
 
 def run(visual, program_runner):
-    random.seed(0)
+    #random.seed(0)
     score = 0
     try:
         stage.init()

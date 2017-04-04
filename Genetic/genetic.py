@@ -33,7 +33,7 @@ import helper
 import Processor
 import snake
 
-input_count = 4
+input_count = 6
 output_count = 4
 
 def main(args):
@@ -89,6 +89,9 @@ def main(args):
         if max_fit > best_fit:
             best_fit = max_fit
             best_prog = max_prog
+            program_runner.set_program(best_prog)
+            program_runner.program_count -= 1 # to offset running it again.
+            snake.run(True, program_runner)
             print('New best program with fitness of {}, after running {} programs.'.format(best_fit, program_runner.program_count))
     program_runner.set_program(best_prog)
     print("Final Score: %d" % snake.run(True, program_runner))

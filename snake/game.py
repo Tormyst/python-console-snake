@@ -20,10 +20,28 @@ def init():
     reset()
     score = 0
 
+def get_input():
+    closest_wall=[
+            snake[0][0]-stage.boundaries['top'],
+            stage.boundaries['right']-snake[0][1],
+            stage.boundaries['bottom']-snake[0][0],
+            snake[0][1]-stage.boundaries['left']
+            ]
+    # print closest_wall, apple[0]-snake[0][0], apple[1]-snake[0][1]
+    return [
+            apple[0]-snake[0][0],
+            apple[1]-snake[0][1],
+            closest_wall[0],
+            closest_wall[1],
+            closest_wall[2],
+            closest_wall[3]
+            ]
+
 def get_direction(p):
-   p.set_input([snake[0][0],snake[0][1], apple[0], apple[1]])
-   p.run()
-   return p.get_value()
+    in_vals = get_input()
+    p.set_input(in_vals)
+    p.run()
+    return p.get_value()
 
 def update(p):
     global direction
@@ -123,5 +141,4 @@ def checkPositionAllowed():
             break
 
     if (collides_with_body or isOutOfBoundaries(x, y)):
-        gameloop.reset()
         gameloop.state = 1
