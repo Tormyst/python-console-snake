@@ -76,8 +76,6 @@ def main(args):
                                      input_count=input_count,
                                      output_count=output_count)
 
-    if verbose:
-        print('Starting genetic evolution')
     stop_value = int(args['--stop'])
     mutation_chance = float(args['--mutation'])
     best_fit = 0
@@ -91,8 +89,16 @@ def main(args):
         program_runner.set_program(program)
         return snake.run(args['--visual'], program_runner)
 
+    if verbose:
+        print('Calculating fitness for entire first population.')
+    population = [(prog, simulatorFitness(prog, program_runner)) for prog in population]
+
+    helper.init(simulatorFitness, program_runner, mutation_chance)
+
+    if verbose:
+        print('Starting genetic evolution')
     while program_runner.program_count <= stop_value:
-        max_fit, max_prog = sel(population, program_runner, mutation_chance, simulatorFitness)
+        max_prog, max_fit = sel(population)
         if max_fit > best_fit:
             best_fit = max_fit
             best_prog = max_prog

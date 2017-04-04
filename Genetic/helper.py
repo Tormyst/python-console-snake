@@ -6,49 +6,56 @@ import operator
 seed = random.randint(0, sys.maxint)
 myRand = random.Random(seed)
 
+def init(fitness_function, program_runner, mutation_chance):
+    global simulator, runner, mutate_prob
+    simulator = fitness_function
+    runner = program_runner
+    mutate_prob = mutation_chance
+
+
 # Selection Operators
-def steady_state_tournament(population, program_runner, mutation_chance, fitness_function):
+def steady_state_tournament(population):
     tournament_bracket = myRand.sample(range(0, len(population)), 4)
-    fitness = [(i, fitness_function(population[i], program_runner)) for i in tournament_bracket]
+    fitness = [(i, population[i][1]) for i in tournament_bracket]
     fitness.sort(key=lambda x: x[1])
-    kid1, kid2 = crossover(population[fitness[2][0]], population[fitness[3][0]], mutation_chance)
+    kid1, kid2 = crossover(population[fitness[2][0]][0], population[fitness[3][0]][0])
     population[fitness[0][0]] = kid1
     population[fitness[1][0]] = kid2
-    return fitness[3][1], population[fitness[3][0]]
+    return population[fitness[3][0]]
 
 
-def proportional_selection(population, program_runner, mutation_chance, fitness_function):
+def proportional_selection(population):
     fitness = [0] * len(population)
     kids = []
     max_fitness = 0
     max_program = ''
     for p, i in zip(population, range(len(population))):
-        fitness[i] = fitness_function(p, program_runner)
-        if fitness[i] > max_fitness:
+        fitness[i] = population[i][1]
+        if population[i][1] > max_fitness:
             max_fitness = fitness[i]
             max_program = p
     total_fitness = sum(fitness)
     for _ in range(len(population)//2):
         index1 = proportional_select(fitness, total_fitness)
         index2 = proportional_select(fitness, total_fitness, sample_block=[index1])
-        kid1, kid2 = crossover(population[index1], population[index2], mutation_chance)
+        kid1, kid2 = crossover(population[index1][0], population[index2][0])
         kids.append(kid1)
         kids.append(kid2)
     for i in range(len(population)):
         population[i] = kids[i]
-    return max_fitness, max_program
+    return max_program
 
 
-def elitist_proportional_selection(population, program_runner, mutation_chance, fitness_function):
+def elitist_proportional_selection(population):
     fitness = [0] * len(population)
     kids = []
     for p, i in zip(population, range(len(population))):
-        fitness[i] = (fitness_function(p, program_runner))
+        fitness[i] = population[i][1]
     total_fitness = sum(fitness)
     for _ in range((len(population)//2) - 1):
         index1 = proportional_select(fitness, total_fitness)
         index2 = proportional_select(fitness, total_fitness, sample_block=[index1])
-        kid1, kid2 = crossover(population[index1], population[index2], mutation_chance)
+        kid1, kid2 = crossover(population[index1][0], population[index2][0])
         kids.append(kid1)
         kids.append(kid2)
 
@@ -61,7 +68,7 @@ def elitist_proportional_selection(population, program_runner, mutation_chance, 
 
     for i in range(len(population)):
         population[i] = kids[i]
-    return max_fitness, max_program
+    return max_program
 
 
 def proportional_select(propotional_population, total, sample_block=[]):
@@ -80,7 +87,7 @@ def proportional_select(propotional_population, total, sample_block=[]):
 def random_program(program_size):
     return os.urandom(program_size * 4)
 
-def crossover(program1, program2, mutation_chance):
+def crossover(program1, program2):
     """Takes 2 programs and preforms 2 point cross over on them, creating two children"""
     prog1_points = myRand.sample(range(0, len(program1) + 1, 4), 2)
     prog2_points = myRand.sample(range(0, len(program2) + 1, 4), 2)
@@ -88,14 +95,13 @@ def crossover(program1, program2, mutation_chance):
     prog2_points.sort()
     child1 = program1[:prog1_points[0]] + program2[prog2_points[0]:prog2_points[1]] + program1[prog1_points[1]:]
     child2 = program2[:prog2_points[0]] + program1[prog1_points[0]:prog1_points[1]] + program2[prog2_points[1]:]
-    return prob_mutate(child1, mutation_chance), prob_mutate(child2, mutation_chance)
+    return prob_mutate(child1), prob_mutate(child2)
 
 
-def prob_mutate(program, prob):
-    if myRand.random() < prob:
-        return mutate(program)
-    else:
-        return program
+def prob_mutate(program):
+    if myRand.random() < mutate_prob:
+        program = mutate(program)
+    return (program, simulator(program, runner))
 
 def mutate(program):
     """Takes in a single program and replaces one instruction at random with a new instruction."""
