@@ -8,6 +8,8 @@ Usage:
 Options:
   -h --help                      Show this screen.
   -l --loop=<count>              Sets the training to be looped, and output to be minimal if greater then 1 [default: 1]
+  -c --count=<value>             Count of how many runs to preform per fitness evaluation. [default: 1]
+  --seed=<seed>                  use a fixed seed
   -d --delimater=<char>          Sets the delimater used by the file. [default is space]
   -p --population=<population>   Population size [default: 100].
   -v --variation=<selection>     Sets the selection-replacement operator (see below for options) [default: sst]
@@ -32,6 +34,7 @@ from docopt import docopt
 import helper
 import Processor
 import snake
+import random
 
 input_count = 6
 output_count = 4
@@ -80,7 +83,11 @@ def main(args):
     best_fit = 0
     best_prog = ''
 
+    snake.gameloop.run_count = int(args['--count'])
+
     def simulatorFitness(program, program_runner):
+        if '--seed' in args:
+            random.seed(args['--seed'])
         program_runner.set_program(program)
         return snake.run(args['--visual'], program_runner)
 
@@ -89,11 +96,15 @@ def main(args):
         if max_fit > best_fit:
             best_fit = max_fit
             best_prog = max_prog
+            if '--seed' in args:
+                random.seed(args['--seed'])
             program_runner.set_program(best_prog)
             program_runner.program_count -= 1 # to offset running it again.
             snake.run(True, program_runner)
             print('New best program with fitness of {}, after running {} programs.'.format(best_fit, program_runner.program_count))
     program_runner.set_program(best_prog)
+    if '--seed' in args:
+        random.seed(args['--seed'])
     print("Final Score: %d" % snake.run(True, program_runner))
 
 

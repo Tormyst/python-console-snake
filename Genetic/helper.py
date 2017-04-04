@@ -1,11 +1,14 @@
 import os
+import sys
 import random
 import operator
 
+seed = random.randint(0, sys.maxint)
+myRand = random.Random(seed)
 
 # Selection Operators
 def steady_state_tournament(population, program_runner, mutation_chance, fitness_function):
-    tournament_bracket = random.sample(range(0, len(population)), 4)
+    tournament_bracket = myRand.sample(range(0, len(population)), 4)
     fitness = [(i, fitness_function(population[i], program_runner)) for i in tournament_bracket]
     fitness.sort(key=lambda x: x[1])
     kid1, kid2 = crossover(population[fitness[2][0]], population[fitness[3][0]], mutation_chance)
@@ -63,7 +66,7 @@ def elitist_proportional_selection(population, program_runner, mutation_chance, 
 
 def proportional_select(propotional_population, total, sample_block=[]):
     total -= sum([propotional_population[i] for i in sample_block])
-    rand_val = random.random() * total
+    rand_val = myRand.random() * total
     pop_size = len(propotional_population)
     index = 0
     while rand_val > 0:
@@ -79,8 +82,8 @@ def random_program(program_size):
 
 def crossover(program1, program2, mutation_chance):
     """Takes 2 programs and preforms 2 point cross over on them, creating two children"""
-    prog1_points = random.sample(range(0, len(program1) + 1, 4), 2)
-    prog2_points = random.sample(range(0, len(program2) + 1, 4), 2)
+    prog1_points = myRand.sample(range(0, len(program1) + 1, 4), 2)
+    prog2_points = myRand.sample(range(0, len(program2) + 1, 4), 2)
     prog1_points.sort()
     prog2_points.sort()
     child1 = program1[:prog1_points[0]] + program2[prog2_points[0]:prog2_points[1]] + program1[prog1_points[1]:]
@@ -89,7 +92,7 @@ def crossover(program1, program2, mutation_chance):
 
 
 def prob_mutate(program, prob):
-    if random.random() < prob:
+    if myRand.random() < prob:
         return mutate(program)
     else:
         return program
@@ -97,5 +100,5 @@ def prob_mutate(program, prob):
 def mutate(program):
     """Takes in a single program and replaces one instruction at random with a new instruction."""
     new_instruction = os.urandom(4)
-    position = random.randrange(0, len(program), 4)
+    position = myRand.randrange(0, len(program), 4)
     return program[:position] + new_instruction + program[position+4:]
