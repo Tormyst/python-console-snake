@@ -14,7 +14,7 @@ run_count = 1
 
 def update():
     game.update(p)
-    graphics.update()
+    graphics.update(p)
 
 
 def start(program_runner):

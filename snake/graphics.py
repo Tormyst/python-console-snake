@@ -32,6 +32,15 @@ def drawScore():
         theme.get_color('border')
         )
 
+def drawInput(p):
+    input = str(p.input)
+    drawTile(
+        (-stage.width / 2),
+        (stage.height / 2) + 1,
+        input,
+        theme.get_color('border')
+    )
+
 def drawSnake():
     snake_head = game.snake[0]
     snake_tail = game.snake[-1]
@@ -109,11 +118,12 @@ def drawText():
     color = theme.get_color('border')
     drawTile((stage.width / 2) - 4, (-stage.height / 2) - 1, "score:", color)
 
-def update():
+def update(p):
     if screen:
         drawSnake()
         drawApples()
         drawScore()
+        drawInput(p)
 
 
 def init():

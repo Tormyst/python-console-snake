@@ -27,7 +27,30 @@ def get_input():
             stage.boundaries['bottom']-snake[0][0],
             snake[0][1]-stage.boundaries['left']
             ]
-    # print closest_wall, apple[0]-snake[0][0], apple[1]-snake[0][1]
+
+    for location in snake[1:]:
+        if snake[0][0] == location[0]:
+            distance = snake[0][1] - location[1]
+            # print "here x", distance, closest_wall[3], closest_wall[1]
+            if distance >= 0:
+                if distance < closest_wall[3]:
+                    closest_wall[3] = distance
+            else:
+                distance = -distance
+                if distance < closest_wall[1]:
+                    closest_wall[1] = distance
+        if snake[0][1] == location[1]:
+            # print "here y"
+            distance = snake[0][0] - location[0]
+            if distance >= 0:
+                if distance < closest_wall[0]:
+                    closest_wall[0] = distance
+            else:
+                distance = -distance
+                if distance < closest_wall[2]:
+                    closest_wall[2] = distance
+
+
     return [
             apple[0]-snake[0][0],
             apple[1]-snake[0][1],
