@@ -30,6 +30,7 @@ Instruction Sets:
 """
 
 from docopt import docopt
+from pickle import dump
 
 import helper
 import Processor
@@ -113,6 +114,9 @@ def main(args):
         random.seed(args['--seed'])
     print("Final Score: %d" % snake.run(True, program_runner))
 
+    file = open("bestProgram.dat", 'wb')
+    dump((best_prog, int(args['--registers']), input_count, args['--instruction']),file)
+    file.close()
 
 
 def run():
