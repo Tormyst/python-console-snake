@@ -33,9 +33,11 @@ def get_input():
             distance = snake[0][1] - location[1]
             # print "here x", distance, closest_wall[3], closest_wall[1]
             if distance >= 0:
+                distance -= 1
                 if distance < closest_wall[3]:
                     closest_wall[3] = distance
             else:
+                distance += 1
                 distance = -distance
                 if distance < closest_wall[1]:
                     closest_wall[1] = distance
@@ -43,9 +45,11 @@ def get_input():
             # print "here y"
             distance = snake[0][0] - location[0]
             if distance >= 0:
+                distance -= 1
                 if distance < closest_wall[0]:
                     closest_wall[0] = distance
             else:
+                distance += 1
                 distance = -distance
                 if distance < closest_wall[2]:
                     closest_wall[2] = distance

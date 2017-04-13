@@ -22,7 +22,7 @@ score_values = {
 }
 
 game_sizes = {
-    's': (20, 20)
+    's': (10, 10)
 }
 
 initial_size = 4
