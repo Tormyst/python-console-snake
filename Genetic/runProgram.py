@@ -21,5 +21,5 @@ program_runner.set_program(program)
 
 while True:
     score = snake.run(True, program_runner)
-    print "Score: ", score
+    print("Score: {}".format(score))
     sleep(1)

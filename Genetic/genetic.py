@@ -45,7 +45,8 @@ def main(args):
     verbose = l == 1
 
     # Valid selection types
-    selection = {'sst': helper.steady_state_tournament, 'ps': helper.proportional_selection, 'eps': helper.elitist_proportional_selection}
+    selection = {'sst': helper.steady_state_tournament, 'ps': helper.proportional_selection,
+                 'eps': helper.elitist_proportional_selection, 'pgm': helper.pareto_grand_mutation}
     instruction_sets = {'simple': Processor.SimpleProcessor, 'complex': Processor.Processor}
 
     initial_program_size = int(args['--registers']) * 3
@@ -94,14 +95,15 @@ def main(args):
         print('Calculating fitness for entire first population.')
     population = [(prog, simulatorFitness(prog, program_runner)) for prog in population]
 
-    helper.init(simulatorFitness, program_runner, mutation_chance)
+    helper.init(simulatorFitness, program_runner, mutation_chance, helper.add_fitness)
 
     if verbose:
         print('Starting genetic evolution')
     while program_runner.program_count <= stop_value:
-        max_prog, max_fit = sel(population)
-        if max_fit > best_fit:
-            best_fit = max_fit
+        (max_prog, max_fit), population = sel(population)
+        # if True:
+        if helper.add_fitness(max_fit) > best_fit:
+            best_fit = helper.add_fitness(max_fit)
             best_prog = max_prog
             if '--seed' in args:
                 random.seed(args['--seed'])
@@ -112,7 +114,7 @@ def main(args):
     program_runner.set_program(best_prog)
     if '--seed' in args:
         random.seed(args['--seed'])
-    print("Final Score: %d" % snake.run(True, program_runner))
+    print("Final Score: {}".format(snake.run(True, program_runner)))
 
     file = open("bestProgram.dat", 'wb')
     dump((best_prog, int(args['--registers']), input_count, args['--instruction']),file)
