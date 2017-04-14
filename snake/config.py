@@ -21,6 +21,13 @@ score_values = {
     'time': 1
 }
 
+timeout = {
+    'init': 100,
+    'step': 20,
+    'max': 1000
+}
+
+
 game_sizes = {
     's': (10, 10)
 }

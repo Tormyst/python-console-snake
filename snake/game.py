@@ -75,16 +75,19 @@ def update(p):
     if p:
         direction = [(1,0),(0,1),(-1,0),(0,-1)][get_direction(p)]
     moveSnake()
-    checkCatch()
+    retVal = checkCatch()
     checkPositionAllowed()
+    return retVal
 
 
 def checkCatch():
     if not len(snake) or not apple:
-        return
+        return False
 
     if (snake[0][0]) == apple[0] and (snake[0][1]) == apple[1]:
         eatApple()
+        return True
+    return False
 
 def eatApple():
     global grow, score

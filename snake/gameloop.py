@@ -13,8 +13,9 @@ run_count = 1
 
 
 def update():
-    game.update(p)
+    retVal = game.update(p)
     graphics.update(p)
+    return retVal
 
 
 def start(program_runner):
@@ -26,21 +27,23 @@ def start(program_runner):
     totalScore = 0
     totalTime = 0
 
-    for _ in range(run_count): # Score based on 3 runs.
-        c = 0
+    for _ in range(run_count): # Score based on multiple runs decided by value.
+        t = 0
+        timeout = config.timeout['init']
         init()
-        while state == 0 and c < 100:
+        while state == 0 and t < timeout:
             if graphics.screen:
                 controls.update()
                 time.sleep(frame_time)
-            update()
-            c += 1
+            if update() and timeout < config.timeout['max']:  # update returns true if ate an apple
+                timeout += config.timeout['step']
+            t += 1
         totalScore += game.score
-        totalTime += c
+        totalTime += t
         reset()
 
     playing = False
-    return totalScore + totalTime
+    return (totalScore, totalTime)
 
 def stop():
     global playing, frame, last_update
