@@ -8,17 +8,21 @@ myRand = random.Random(seed)
 
 
 def init(fitness_function, program_runner, mutation_chance, multi_to_one_fitness):
-    global simulator, runner, mutate_prob, multi_to_one_fitness_function
+    global simulator, runner, mutate_prob, add_remove_prob, multi_to_one_fitness_function
     simulator = fitness_function
     runner = program_runner
     mutate_prob = mutation_chance
+    add_remove_prob = mutation_chance
     multi_to_one_fitness_function = multi_to_one_fitness
 
 
 # Selection Operators
 def steady_state_tournament(population):
     tournament_bracket = myRand.sample(range(0, len(population)), 4)
-    fitness = [(i, multi_to_one_fitness_function(population[i][1])) for i in tournament_bracket]
+
+    fitness = multi_to_one_fitness_function(population)
+
+    fitness = [(i, fitness[i]) for i in tournament_bracket]
     fitness.sort(key=lambda x: x[1])
     kid1, kid2 = crossover(population[fitness[2][0]][0], population[fitness[3][0]][0])
     population[fitness[0][0]] = kid1
@@ -27,13 +31,12 @@ def steady_state_tournament(population):
 
 
 def proportional_selection(population):
-    fitness = [0] * len(population)
+    fitness = multi_to_one_fitness_function(population)
     kids = []
     max_fitness = 0
     max_program = ''
-    for p, i in zip(population, range(len(population))):
-        fitness[i] = multi_to_one_fitness_function(population[i][1])
-        if population[i][1] > max_fitness:
+    for i, p in enumerate(population):
+        if fitness[i] > max_fitness:
             max_fitness = fitness[i]
             max_program = p
     total_fitness = sum(fitness)
@@ -49,10 +52,8 @@ def proportional_selection(population):
 
 
 def elitist_proportional_selection(population):
-    fitness = [0] * len(population)
+    fitness = multi_to_one_fitness_function(population)
     kids = []
-    for p, i in zip(population, range(len(population))):
-        fitness[i] = multi_to_one_fitness_function(population[i][1])
     total_fitness = sum(fitness)
     for _ in range((len(population)//2) - 1):
         index1 = proportional_select(fitness, total_fitness)
@@ -73,11 +74,11 @@ def elitist_proportional_selection(population):
     return max_program, population
 
 
-def pareto_grand_mutation(population):
+def pure_mutation(population):
     pop_size = len(population)
     mutated_pop = [mutate(p[0]) for p in population]
     population.extend([(prog, simulator(prog, runner)) for prog in mutated_pop])
-    population = [ y for (x, y) in sorted(zip(pareto_count(population),population))][pop_size:]
+    population = [ y for (x, y) in sorted(zip(multi_to_one_fitness_function(population),population))][pop_size:]
     return population[-1], population
 
 
@@ -159,6 +160,9 @@ def crossover(program1, program2):
 def add_fitness(fit):
     return sum(fit)
 
+def all_add_fitness(fits):
+    return [add_fitness(f[1]) for f in fits]
+
 def prob_mutate(program):
     if myRand.random() < mutate_prob:
         program = mutate(program)
@@ -166,6 +170,12 @@ def prob_mutate(program):
 
 def mutate(program):
     """Takes in a single program and replaces one instruction at random with a new instruction."""
-    new_instruction = os.urandom(4)
-    position = myRand.randrange(0, len(program), 4)
-    return program[:position] + new_instruction + program[position+4:]
+    return_program = b""
+    for position in range(0,len(program), 4):
+        if myRand.random() < mutate_prob:
+            new_instruction = os.urandom(4)
+            return_program += new_instruction
+        if myRand.random() > mutate_prob:
+            return_program += program[position:position+4]
+
+    return return_program
