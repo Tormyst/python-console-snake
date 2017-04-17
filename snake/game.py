@@ -14,12 +14,6 @@ grow = config.initial_size - 1
 score = 0
 
 
-def init():
-    global score, lives
-
-    reset()
-    score = 0
-
 def get_input():
     closest_wall=[
             snake[0][0]-stage.boundaries['top'],
@@ -133,6 +127,7 @@ def reset():
     gameloop.frame = 1
     grow = config.initial_size - 1
     spawnApple()
+    score = 0
 
 
 def spawnApple():

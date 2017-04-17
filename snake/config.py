@@ -22,8 +22,7 @@ score_values = {
 }
 
 timeout = {
-    'init': 100,
-    'step': 20,
+    'init': 50,
     'max': 1000
 }
 
