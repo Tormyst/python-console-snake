@@ -19,6 +19,8 @@ program_runner = Processor_Class(register_count=register_count,
                                      output_count=4)
 program_runner.set_program(program)
 
+program_runner.print_program()
+
 while True:
     score = snake.run(True, program_runner)
     print("Score: {}".format(score))

@@ -1,4 +1,4 @@
-"""Genetic Box 1.
+"""Genetic Program Trainer to Play Snake
 
 Usage:
   genetic.py [options]
@@ -9,20 +9,20 @@ Options:
   -h --help                      Show this screen.
   -c --count=<value>             Count of how many runs to preform per fitness evaluation. [default: 1]
   --seed=<seed>                  use a fixed seed
-  -p --population=<population>   Population size [default: 100].
+  -p --population=<population>   Population size [default: 100]
   -v --variation=<selection>     Sets the selection-replacement operator (see below for options) [default: sst]
   -r --registers=<count>         Sets the number of registers to be used in the program [default: 8]
   -f --fitness=<kind>            Sets the mode of fitness to use to take multi objective to a single value. [default: add]
   -m --mutation=<probability>    Sets the probability that any child gets mutated [default: 0.05]
   -s --stop=<count>              Sets the stop criterion based on the number of fitness calculations done [default: 5000]
   -i --instruction=<set>         Sets the instruction set to use for the program [default: complex]
-  -V --visual                    Sets all runs to be visual.
+  -V --visual                    Sets all runs to be visual
 
 Selection-replacement Operators:
   sst   Steady State Tournament
   ps    Proportional Selection
   eps   Elitist Proportional Selection
-  
+
 Fitness Calculators:
   add   Add fitness values together.
   rank  Use pareto rank.
