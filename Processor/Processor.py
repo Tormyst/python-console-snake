@@ -77,12 +77,13 @@ class Processor:
 
     def set_input(self, input_array):
         self.input = list(input_array)
-        self.r = [0] * self.register_count
+        self.r = self.r[:4] + ([0] * (self.register_count - 4))
         self.branching = False
 
     def set_program(self, program):
         self.program = []
         self.program_count += 1
+        self.r = [0] * self.register_count
         for i in range(0, len(program), 4):
             self.program.append(Instruction(program, self.mode_info, i))
 
