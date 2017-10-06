@@ -1,2 +1,2 @@
 export PYTHONPATH="$PYTHONPATH:`pwd`"
-python -u Genetic/runProgram.py $@
+python2 -u Genetic/runProgram.py $@
